@@ -442,7 +442,6 @@ const langButtons = Array.from(document.querySelectorAll(".lang-btn"));
 const languageSwitcher = document.querySelector(".language-switcher");
 const languageToggle = document.getElementById("languageToggle");
 const languageFlag = document.getElementById("languageFlag");
-const languageLabel = document.getElementById("languageLabel");
 const tourGrid = document.getElementById("tourGrid");
 const twoDayList = document.getElementById("twoDayList");
 const threeDayList = document.getElementById("threeDayList");
@@ -476,13 +475,13 @@ function setTextContent(lang) {
     button.classList.toggle("is-active", button.dataset.lang === activeLang);
   });
 
-  if (languageFlag && languageLabel && activeLanguageMeta) {
+  if (languageFlag && activeLanguageMeta) {
     languageFlag.textContent = activeLanguageMeta.flag;
-    languageLabel.textContent = activeLanguageMeta.label;
   }
 
   if (languageToggle) {
     languageToggle.setAttribute("aria-expanded", "false");
+    languageToggle.setAttribute("aria-label", `Choose language: ${activeLanguageMeta.label}`);
   }
 
   if (languageSwitcher) {

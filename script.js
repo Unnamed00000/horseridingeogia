@@ -462,6 +462,7 @@ const twoDayList = document.getElementById("twoDayList");
 const threeDayList = document.getElementById("threeDayList");
 const bringList = document.getElementById("bringList");
 const provideList = document.getElementById("provideList");
+let revealObserver;
 
 const languageMeta = {
   en: { flag: "🇬🇧", label: "English" },
@@ -508,6 +509,7 @@ function setTextContent(lang) {
   renderList(threeDayList, dictionary.threeDayList);
   renderList(bringList, dictionary.bringList);
   renderList(provideList, dictionary.provideList);
+  setupRevealAnimations();
   localStorage.setItem("pankisi-language", activeLang);
 }
 
@@ -537,6 +539,59 @@ function renderList(container, items) {
   }
 
   container.innerHTML = items.map((item) => `<li>${item}</li>`).join("");
+}
+
+function setupRevealAnimations() {
+  const revealTargets = [
+    ".intro",
+    ".section-heading",
+    ".feature-grid article",
+    ".tour-card",
+    ".split-section",
+    ".about-grid > div",
+    ".prepare-grid article",
+    ".gallery img",
+    ".contact-section > div",
+    ".contact-location",
+    ".site-footer"
+  ];
+
+  const targets = Array.from(document.querySelectorAll(revealTargets.join(",")));
+  if (!targets.length) {
+    return;
+  }
+
+  document.body.classList.add("has-reveal");
+
+  targets.forEach((target, index) => {
+    target.dataset.reveal = "";
+    target.style.setProperty("--reveal-delay", `${Math.min(index % 6, 5) * 55}ms`);
+  });
+
+  if (!("IntersectionObserver" in window)) {
+    targets.forEach((target) => target.classList.add("is-visible"));
+    return;
+  }
+
+  if (!revealObserver) {
+    revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.14, rootMargin: "0px 0px -8% 0px" }
+    );
+  }
+
+  targets.forEach((target) => {
+    if (!target.classList.contains("is-visible")) {
+      revealObserver.observe(target);
+    }
+  });
 }
 
 if (languageToggle && languageSwitcher) {

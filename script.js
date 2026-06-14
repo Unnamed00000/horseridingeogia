@@ -439,14 +439,28 @@ const translations = {
 
 const elements = Array.from(document.querySelectorAll("[data-i18n]"));
 const langButtons = Array.from(document.querySelectorAll(".lang-btn"));
+const languageSwitcher = document.querySelector(".language-switcher");
+const languageToggle = document.getElementById("languageToggle");
+const languageFlag = document.getElementById("languageFlag");
+const languageLabel = document.getElementById("languageLabel");
 const tourGrid = document.getElementById("tourGrid");
 const twoDayList = document.getElementById("twoDayList");
 const threeDayList = document.getElementById("threeDayList");
 const bringList = document.getElementById("bringList");
 const provideList = document.getElementById("provideList");
 
+const languageMeta = {
+  en: { flag: "🇬🇧", label: "English" },
+  de: { flag: "🇩🇪", label: "Deutsch" },
+  ka: { flag: "🇬🇪", label: "ქართული" },
+  ru: { flag: "🇷🇺", label: "Русский" },
+  ar: { flag: "🇸🇦", label: "العربية" }
+};
+
 function setTextContent(lang) {
   const dictionary = translations[lang] || translations.en;
+  const activeLang = translations[lang] ? lang : "en";
+  const activeLanguageMeta = languageMeta[activeLang];
 
   elements.forEach((element) => {
     const key = element.dataset.i18n;
@@ -455,22 +469,39 @@ function setTextContent(lang) {
     }
   });
 
-  document.documentElement.lang = lang;
-  document.body.classList.toggle("is-rtl", lang === "ar");
+  document.documentElement.lang = activeLang;
+  document.body.classList.toggle("is-rtl", activeLang === "ar");
 
   langButtons.forEach((button) => {
-    button.classList.toggle("is-active", button.dataset.lang === lang);
+    button.classList.toggle("is-active", button.dataset.lang === activeLang);
   });
+
+  if (languageFlag && languageLabel && activeLanguageMeta) {
+    languageFlag.textContent = activeLanguageMeta.flag;
+    languageLabel.textContent = activeLanguageMeta.label;
+  }
+
+  if (languageToggle) {
+    languageToggle.setAttribute("aria-expanded", "false");
+  }
+
+  if (languageSwitcher) {
+    languageSwitcher.classList.remove("is-open");
+  }
 
   renderTours(dictionary.tours);
   renderList(twoDayList, dictionary.twoDayList);
   renderList(threeDayList, dictionary.threeDayList);
   renderList(bringList, dictionary.bringList);
   renderList(provideList, dictionary.provideList);
-  localStorage.setItem("pankisi-language", lang);
+  localStorage.setItem("pankisi-language", activeLang);
 }
 
 function renderTours(tours) {
+  if (!tourGrid) {
+    return;
+  }
+
   tourGrid.innerHTML = tours
     .map(
       (tour) => `
@@ -487,7 +518,32 @@ function renderTours(tours) {
 }
 
 function renderList(container, items) {
+  if (!container) {
+    return;
+  }
+
   container.innerHTML = items.map((item) => `<li>${item}</li>`).join("");
+}
+
+if (languageToggle && languageSwitcher) {
+  languageToggle.addEventListener("click", () => {
+    const isOpen = languageSwitcher.classList.toggle("is-open");
+    languageToggle.setAttribute("aria-expanded", String(isOpen));
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!languageSwitcher.contains(event.target)) {
+      languageSwitcher.classList.remove("is-open");
+      languageToggle.setAttribute("aria-expanded", "false");
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      languageSwitcher.classList.remove("is-open");
+      languageToggle.setAttribute("aria-expanded", "false");
+    }
+  });
 }
 
 langButtons.forEach((button) => {

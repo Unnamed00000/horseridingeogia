@@ -100,35 +100,99 @@ img {
   text-decoration: none;
 }
 
-.nav a:hover {
+.nav a:hover,
+.nav a.is-current {
   color: var(--forest);
 }
 
 .language-switcher {
-  display: flex;
-  gap: 6px;
-  padding: 4px;
+  position: relative;
+  justify-self: end;
+}
+
+.language-toggle {
+  display: inline-flex;
+  min-width: 158px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: rgba(255, 250, 241, 0.76);
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 800;
+  padding: 10px 12px;
+}
+
+.language-current-flag {
+  font-size: 1.1rem;
+}
+
+.language-current-name {
+  flex: 1;
+  text-align: left;
+}
+
+body.is-rtl .language-current-name {
+  text-align: right;
+}
+
+.language-chevron {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.language-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 30;
+  display: none;
+  min-width: 190px;
+  padding: 6px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+body.is-rtl .language-menu {
+  right: auto;
+  left: 0;
+}
+
+.language-switcher.is-open .language-menu {
+  display: grid;
+  gap: 4px;
 }
 
 .lang-btn {
-  min-width: 36px;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 10px;
   border: 0;
   border-radius: 6px;
   background: transparent;
-  color: var(--muted);
+  color: var(--ink);
   cursor: pointer;
   font: inherit;
-  font-size: 0.78rem;
+  font-size: 0.92rem;
   font-weight: 700;
-  padding: 7px 8px;
+  padding: 10px;
+  text-align: left;
 }
 
 .lang-btn.is-active {
-  background: var(--forest);
-  color: var(--paper);
+  background: rgba(114, 134, 74, 0.14);
+  color: var(--forest);
+}
+
+body.is-rtl .lang-btn {
+  text-align: right;
 }
 
 .hero {
@@ -221,6 +285,32 @@ img {
   padding-inline: clamp(18px, 5vw, 72px);
 }
 
+.page-main {
+  min-height: 70vh;
+}
+
+.page-hero {
+  padding: clamp(70px, 10vw, 130px) clamp(18px, 5vw, 72px) clamp(38px, 6vw, 72px);
+  background:
+    linear-gradient(90deg, rgba(23, 51, 31, 0.9), rgba(23, 51, 31, 0.62)),
+    url("https://horseridingeogia.wordpress.com/wp-content/uploads/2026/03/48218fde-bb00-471d-b8f5-85f1b868894d-1.jpeg?w=1400&allow_lossy=1") center / cover;
+  color: var(--paper);
+}
+
+.page-hero h1,
+.contact-page h1 {
+  max-width: 920px;
+  margin: 0;
+  font-size: clamp(2.4rem, 5.8vw, 5rem);
+  line-height: 1.05;
+}
+
+.page-hero p:not(.section-kicker) {
+  max-width: 680px;
+  color: rgba(255, 250, 241, 0.8);
+  font-size: 1.1rem;
+}
+
 .section {
   padding-top: clamp(58px, 8vw, 100px);
   padding-bottom: clamp(58px, 8vw, 100px);
@@ -238,6 +328,10 @@ img {
 .contact-section h2 {
   max-width: 820px;
   font-size: clamp(2rem, 4.6vw, 4rem);
+}
+
+.contact-page {
+  min-height: 68vh;
 }
 
 .section-heading {

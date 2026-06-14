@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Prepare - Pankisi Valley Horse Tours</title>
+    <meta name="description" content="What to bring for horseback riding tours in Pankisi Valley." />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="Pankisi Valley Horse Tours">
+        <span class="brand-mark">PV</span>
+        <span><strong data-i18n="brand">Pankisi Valley Horse Tours</strong><small data-i18n="brandSub">Horseback riding in Georgia</small></span>
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="tours.html" data-i18n="navTours">Tours</a>
+        <a href="about.html" data-i18n="navAbout">About</a>
+        <a class="is-current" href="prepare.html" data-i18n="navPrepare">Prepare</a>
+        <a href="gallery.html" data-i18n="navGallery">Gallery</a>
+        <a href="contact.html" data-i18n="navContact">Contact</a>
+      </nav>
+      <div class="language-switcher" aria-label="Language selector">
+        <button type="button" class="language-toggle" id="languageToggle" aria-expanded="false" aria-controls="languageMenu"><span class="language-current-flag" id="languageFlag">🇬🇧</span><span class="language-current-name" id="languageLabel">English</span><span class="language-chevron" aria-hidden="true">▾</span></button>
+        <div class="language-menu" id="languageMenu" role="menu">
+          <button type="button" class="lang-btn is-active" data-lang="en" role="menuitem"><span>🇬🇧</span><span>English</span></button>
+          <button type="button" class="lang-btn" data-lang="de" role="menuitem"><span>🇩🇪</span><span>Deutsch</span></button>
+          <button type="button" class="lang-btn" data-lang="ka" role="menuitem"><span>🇬🇪</span><span>ქართული</span></button>
+          <button type="button" class="lang-btn" data-lang="ru" role="menuitem"><span>🇷🇺</span><span>Русский</span></button>
+          <button type="button" class="lang-btn" data-lang="ar" role="menuitem"><span>🇸🇦</span><span>العربية</span></button>
+        </div>
+      </div>
+    </header>
+
+    <main id="top" class="page-main">
+      <section class="page-hero">
+        <p class="section-kicker" data-i18n="prepareKicker">Preparing for Tours</p>
+        <h1 data-i18n="prepareTitle">What to bring</h1>
+      </section>
+      <section class="section">
+        <div class="prepare-grid">
+          <article>
+            <h3 data-i18n="bringTitle">Bring with you</h3>
+            <ul id="bringList"></ul>
+          </article>
+          <article>
+            <h3 data-i18n="provideTitle">Provided on multi-day tours</h3>
+            <ul id="provideList"></ul>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p data-i18n="footerText">Pankisi Valley Horse Tours. Guided horseback riding in Georgia.</p>
+      <a href="#top" data-i18n="backTop">Back to top</a>
+    </footer>
+    <script src="script.js"></script>
+  </body>
+</html>

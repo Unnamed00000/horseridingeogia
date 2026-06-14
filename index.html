@@ -21,19 +21,26 @@
       </a>
 
       <nav class="nav" aria-label="Main navigation">
-        <a href="#tours" data-i18n="navTours">Tours</a>
-        <a href="#about" data-i18n="navAbout">About</a>
-        <a href="#prepare" data-i18n="navPrepare">Prepare</a>
-        <a href="#gallery" data-i18n="navGallery">Gallery</a>
-        <a href="#contact" data-i18n="navContact">Contact</a>
+        <a href="tours.html" data-i18n="navTours">Tours</a>
+        <a href="about.html" data-i18n="navAbout">About</a>
+        <a href="prepare.html" data-i18n="navPrepare">Prepare</a>
+        <a href="gallery.html" data-i18n="navGallery">Gallery</a>
+        <a href="contact.html" data-i18n="navContact">Contact</a>
       </nav>
 
       <div class="language-switcher" aria-label="Language selector">
-        <button type="button" class="lang-btn is-active" data-lang="en">EN</button>
-        <button type="button" class="lang-btn" data-lang="de">DE</button>
-        <button type="button" class="lang-btn" data-lang="ka">KA</button>
-        <button type="button" class="lang-btn" data-lang="ru">RU</button>
-        <button type="button" class="lang-btn" data-lang="ar">AR</button>
+        <button type="button" class="language-toggle" id="languageToggle" aria-expanded="false" aria-controls="languageMenu">
+          <span class="language-current-flag" id="languageFlag">🇬🇧</span>
+          <span class="language-current-name" id="languageLabel">English</span>
+          <span class="language-chevron" aria-hidden="true">▾</span>
+        </button>
+        <div class="language-menu" id="languageMenu" role="menu">
+          <button type="button" class="lang-btn is-active" data-lang="en" role="menuitem"><span>🇬🇧</span><span>English</span></button>
+          <button type="button" class="lang-btn" data-lang="de" role="menuitem"><span>🇩🇪</span><span>Deutsch</span></button>
+          <button type="button" class="lang-btn" data-lang="ka" role="menuitem"><span>🇬🇪</span><span>ქართული</span></button>
+          <button type="button" class="lang-btn" data-lang="ru" role="menuitem"><span>🇷🇺</span><span>Русский</span></button>
+          <button type="button" class="lang-btn" data-lang="ar" role="menuitem"><span>🇸🇦</span><span>العربية</span></button>
+        </div>
       </div>
     </header>
 
@@ -47,8 +54,8 @@
             Discover the wild beauty of Pankisi Valley with a local certified guide, safe horses, and routes for every experience level.
           </p>
           <div class="hero-actions">
-            <a class="btn btn-primary" href="#tours" data-i18n="viewTours">View tours</a>
-            <a class="btn btn-secondary" href="#contact" data-i18n="bookNow">Book a ride</a>
+            <a class="btn btn-primary" href="tours.html" data-i18n="viewTours">View tours</a>
+            <a class="btn btn-secondary" href="contact.html" data-i18n="bookNow">Book a ride</a>
           </div>
         </div>
       </section>

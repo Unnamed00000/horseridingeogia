@@ -2,6 +2,15 @@
 
 Static multilingual landing page for horseback riding tours in Georgia's Pankisi Valley.
 
+The site has separate pages for each main tab:
+
+- `index.html`
+- `tours.html`
+- `about.html`
+- `prepare.html`
+- `gallery.html`
+- `contact.html`
+
 ## Languages
 
 - English

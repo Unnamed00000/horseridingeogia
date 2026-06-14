@@ -463,6 +463,13 @@ const threeDayList = document.getElementById("threeDayList");
 const bringList = document.getElementById("bringList");
 const provideList = document.getElementById("provideList");
 let revealObserver;
+let galleryLightbox;
+let galleryLightboxImage;
+let galleryLightboxCaption;
+let galleryLightboxCount;
+let activeGalleryImages = [];
+let activeGalleryIndex = 0;
+let touchStartX = 0;
 
 const languageMeta = {
   en: { flag: "🇬🇧", label: "English" },
@@ -594,6 +601,126 @@ function setupRevealAnimations() {
   });
 }
 
+function setupGalleryLightbox() {
+  const galleryImages = Array.from(document.querySelectorAll(".gallery img"));
+  if (!galleryImages.length) {
+    return;
+  }
+
+  ensureGalleryLightbox();
+
+  galleryImages.forEach((image, index) => {
+    image.tabIndex = 0;
+    image.setAttribute("role", "button");
+    image.setAttribute("aria-label", `${image.alt || "Open gallery photo"} ${index + 1}`);
+    image.addEventListener("click", () => openGalleryLightbox(galleryImages, index));
+    image.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        openGalleryLightbox(galleryImages, index);
+      }
+    });
+  });
+}
+
+function ensureGalleryLightbox() {
+  if (galleryLightbox) {
+    return;
+  }
+
+  galleryLightbox = document.createElement("div");
+  galleryLightbox.className = "gallery-lightbox";
+  galleryLightbox.setAttribute("role", "dialog");
+  galleryLightbox.setAttribute("aria-modal", "true");
+  galleryLightbox.setAttribute("aria-label", "Gallery photo viewer");
+  galleryLightbox.innerHTML = `
+    <div class="gallery-lightbox-top">
+      <span class="gallery-lightbox-count"></span>
+      <button type="button" class="gallery-lightbox-button gallery-lightbox-close" aria-label="Close gallery">×</button>
+    </div>
+    <div class="gallery-lightbox-stage">
+      <button type="button" class="gallery-lightbox-button gallery-lightbox-nav gallery-lightbox-prev" aria-label="Previous photo">‹</button>
+      <img class="gallery-lightbox-image" alt="" />
+      <button type="button" class="gallery-lightbox-button gallery-lightbox-nav gallery-lightbox-next" aria-label="Next photo">›</button>
+    </div>
+    <div class="gallery-lightbox-bottom">
+      <span class="gallery-lightbox-caption"></span>
+    </div>
+  `;
+
+  document.body.appendChild(galleryLightbox);
+  galleryLightboxImage = galleryLightbox.querySelector(".gallery-lightbox-image");
+  galleryLightboxCaption = galleryLightbox.querySelector(".gallery-lightbox-caption");
+  galleryLightboxCount = galleryLightbox.querySelector(".gallery-lightbox-count");
+
+  galleryLightbox.querySelector(".gallery-lightbox-close").addEventListener("click", closeGalleryLightbox);
+  galleryLightbox.querySelector(".gallery-lightbox-prev").addEventListener("click", () => showGalleryImage(activeGalleryIndex - 1));
+  galleryLightbox.querySelector(".gallery-lightbox-next").addEventListener("click", () => showGalleryImage(activeGalleryIndex + 1));
+
+  galleryLightbox.addEventListener("click", (event) => {
+    if (event.target === galleryLightbox) {
+      closeGalleryLightbox();
+    }
+  });
+
+  galleryLightbox.addEventListener("touchstart", (event) => {
+    touchStartX = event.changedTouches[0].clientX;
+  }, { passive: true });
+
+  galleryLightbox.addEventListener("touchend", (event) => {
+    const deltaX = event.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(deltaX) > 48) {
+      showGalleryImage(activeGalleryIndex + (deltaX < 0 ? 1 : -1));
+    }
+  }, { passive: true });
+
+  document.addEventListener("keydown", (event) => {
+    if (!galleryLightbox.classList.contains("is-open")) {
+      return;
+    }
+
+    if (event.key === "Escape") {
+      closeGalleryLightbox();
+    } else if (event.key === "ArrowLeft") {
+      showGalleryImage(activeGalleryIndex - 1);
+    } else if (event.key === "ArrowRight") {
+      showGalleryImage(activeGalleryIndex + 1);
+    }
+  });
+}
+
+function openGalleryLightbox(images, index) {
+  activeGalleryImages = images;
+  activeGalleryIndex = index;
+  showGalleryImage(index);
+  galleryLightbox.classList.add("is-open");
+  document.body.classList.add("lightbox-open");
+  galleryLightbox.querySelector(".gallery-lightbox-close").focus();
+}
+
+function closeGalleryLightbox() {
+  galleryLightbox.classList.remove("is-open");
+  document.body.classList.remove("lightbox-open");
+}
+
+function showGalleryImage(index) {
+  if (!activeGalleryImages.length) {
+    return;
+  }
+
+  activeGalleryIndex = (index + activeGalleryImages.length) % activeGalleryImages.length;
+  const image = activeGalleryImages[activeGalleryIndex];
+  galleryLightboxImage.style.opacity = "0";
+
+  window.setTimeout(() => {
+    galleryLightboxImage.src = image.currentSrc || image.src;
+    galleryLightboxImage.alt = image.alt || "";
+    galleryLightboxCaption.textContent = image.alt || "";
+    galleryLightboxCount.textContent = `${activeGalleryIndex + 1} / ${activeGalleryImages.length}`;
+    galleryLightboxImage.style.opacity = "1";
+  }, 90);
+}
+
 if (languageToggle && languageSwitcher) {
   languageToggle.addEventListener("click", () => {
     const isOpen = languageSwitcher.classList.toggle("is-open");
@@ -620,3 +747,4 @@ langButtons.forEach((button) => {
 });
 
 setTextContent(localStorage.getItem("pankisi-language") || "en");
+setupGalleryLightbox();
